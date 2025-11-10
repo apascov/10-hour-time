@@ -226,6 +226,27 @@ function toggleView() {
 }
 
 /**
+ * Smart interval that syncs to custom seconds
+ * This prevents skipping by always checking when the next second actually occurs
+ */
+function scheduleNextUpdate() {
+    const time = getCustomTime();
+    const currentSecond = time.s;
+    
+    // Calculate milliseconds until next custom second
+    const fractionalPart = time.fractionalS - currentSecond;
+    const msUntilNextSecond = (1 - fractionalPart) * UPDATE_INTERVAL;
+    
+    // Schedule update slightly before the next second (with small buffer)
+    const delay = Math.max(10, msUntilNextSecond - 50);
+    
+    setTimeout(() => {
+        updateClock();
+        scheduleNextUpdate(); // Schedule the next update
+    }, delay);
+}
+
+/**
  * Initialize the clock
  */
 function init() {
@@ -235,8 +256,8 @@ function init() {
     // Initial update
     updateClock();
     
-    // Set up interval for updates (every 864ms = 1 custom second)
-    setInterval(updateClock, UPDATE_INTERVAL);
+    // Use smart scheduling instead of fixed interval
+    scheduleNextUpdate();
     
     // Set up toggle button
     const toggleBtn = document.getElementById('toggle-view');
