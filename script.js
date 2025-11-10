@@ -16,15 +16,15 @@ let animationFrameId = null;
  * @returns {Object} Custom time object with h, m, s, and fractional values
  */
 function getCustomTime() {
-    // Get current UTC time in seconds since midnight
+    // Get current LOCAL time in seconds since midnight
     const now = new Date();
-    const utcSeconds = now.getUTCHours() * 3600 + 
-                       now.getUTCMinutes() * 60 + 
-                       now.getUTCSeconds() + 
-                       now.getUTCMilliseconds() / 1000;
+    const localSeconds = now.getHours() * 3600 + 
+                         now.getMinutes() * 60 + 
+                         now.getSeconds() + 
+                         now.getMilliseconds() / 1000;
     
     // Calculate custom seconds since midnight
-    const customSecondsToday = utcSeconds * SCALE;
+    const customSecondsToday = localSeconds * SCALE;
     
     // Extract hours, minutes, seconds
     const hours = Math.floor(customSecondsToday / 10000);
@@ -68,14 +68,17 @@ function updateDigitalClock() {
 }
 
 /**
- * Update UTC time display for comparison
+ * Update local time display for comparison
  */
-function updateUTCDisplay() {
+function updateLocalDisplay() {
     const time = getCustomTime();
-    const utcDisplay = document.getElementById('utc-display');
+    const localDisplay = document.getElementById('utc-display');
     
-    const utcFormatted = time.utcTime.toUTCString().split(' ')[4]; // Extract HH:MM:SS
-    utcDisplay.textContent = utcFormatted;
+    const hours = time.utcTime.getHours().toString().padStart(2, '0');
+    const minutes = time.utcTime.getMinutes().toString().padStart(2, '0');
+    const seconds = time.utcTime.getSeconds().toString().padStart(2, '0');
+    const localFormatted = `${hours}:${minutes}:${seconds}`;
+    localDisplay.textContent = localFormatted;
 }
 
 /**
@@ -124,7 +127,7 @@ function updateAnalogClock() {
  */
 function updateClock() {
     updateDigitalClock();
-    updateUTCDisplay();
+    updateLocalDisplay();
     
     if (isAnalogMode) {
         updateAnalogClock();
