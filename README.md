@@ -74,9 +74,6 @@ Display format: `HH : MM : SS`
 - Update display every `864 ms`.  
 - Recompute directly from system time instead of accumulating elapsed intervals.
 
-> **// TODO (Copilot):** Implement `updateClock()` that calculates and displays HH:MM:SS.  
-> **// TODO:** Use `setInterval(updateClock, 864)` or `requestAnimationFrame` for smoother animation.
-
 ### 2. Animation
 - Use **SVG** for precision and easy design import (e.g., from Illustrator or Figma).  
 - Animate rotation via `requestAnimationFrame`:  
@@ -84,8 +81,6 @@ Display format: `HH : MM : SS`
   - Minute hand → `(M + S/100) / 100 × 360°`  
   - Second hand → `S / 100 × 360°`  
 - Smooth motion by interpolating between real time fractions.
-
-> **// TODO:** Create `updateHands()` to rotate each SVG hand based on custom time.
 
 ### 3. Design integration
 - Replace placeholder SVGs with your own artwork.  
@@ -96,63 +91,8 @@ Display format: `HH : MM : SS`
 - Scale SVG to viewport width.  
 - Offer toggle between **numeric view** and **analog view** (click/tap).
 
-> **// TODO:** Implement toggle button logic and style transitions.
-
 ### 5. Accuracy tests
 - Verify that `09:99:99` rolls over cleanly to `00:00:00`.  
 - Compare displayed custom seconds with computed formula every few minutes.  
 - Test midnight UTC rollover.
-
----
-
-## 🔧 Local Setup
-
-1. Open folder in VS Code.  
-2. Run using Live Server or any simple static server (`python3 -m http.server`).  
-3. The clock should start ticking according to the 10-hour system.
-
----
-
-## 🧭 Path to Apple Watch App (future)
-
-The same logic and ratios can be ported directly to **SwiftUI**.
-
-| Web Component | watchOS Equivalent |
-|----------------|-------------------|
-| `script.js` time logic | Swift struct computing from `Date()` |
-| `requestAnimationFrame` | `TimelineView(.animation)` |
-| SVG drawings | `Canvas` shapes / `Image` layers |
-| HTML/CSS layout | SwiftUI `ZStack` |
-| Interval 864 ms | `TimelineSchedule.periodic(from:by:)` |
-
-Once ported, this logic will work identically inside a watchOS app that updates in real time while open.
-
----
-
-## 🧪 Testing Checklist
-
-- [ ] Verify smooth animation for at least 5 minutes.  
-- [ ] Check rollover at 09:99:99 → 00:00:00.  
-- [ ] Compare displayed “midday” with Earth noon.  
-- [ ] Test responsiveness on mobile.  
-- [ ] Confirm accuracy after tab sleep/wake (should resync).  
-
----
-
-## 💡 Next Steps
-
-- [ ] Add digital ↔ analog toggle button.  
-- [ ] Add real-time UTC clock for comparison.  
-- [ ] Experiment with distortion or time-stretch effects (conceptual layer).  
-- [ ] Export logic for future SwiftUI prototype.  
-
----
-
-## 🧰 Notes for Copilot
-
-- Focus on modular JS functions: `getCustomTime()`, `updateClock()`, `updateHands()`.  
-- Use descriptive comments for animation timing.  
-- Suggest reusable constants for SCALE and FULL_DAY.  
-- Maintain UTC alignment (avoid DST interference).  
-- Prepare code for easy translation to SwiftUI later.
 
