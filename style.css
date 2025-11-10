@@ -1,0 +1,251 @@
+/* CSS Variables for theming */
+:root {
+    --bg-color: #1a1a2e;
+    --text-color: #eee;
+    --primary-color: #16213e;
+    --accent-color: #0f3460;
+    --highlight-color: #e94560;
+    
+    --clock-face: #f8f9fa;
+    --clock-border: #333;
+    --hour-hand: #333;
+    --minute-hand: #555;
+    --second-hand: #e94560;
+    --center-dot: #333;
+    --marker-color: #333;
+}
+
+/* Light theme variables (can be toggled later) */
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-color: #f0f0f0;
+        --text-color: #222;
+        --primary-color: #ffffff;
+        --accent-color: #e0e0e0;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--highlight-color);
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+/* Toggle button */
+.toggle-btn {
+    background: var(--accent-color);
+    color: var(--text-color);
+    border: 2px solid var(--highlight-color);
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+.toggle-btn:hover {
+    background: var(--highlight-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(233, 69, 96, 0.3);
+}
+
+.toggle-btn:active {
+    transform: translateY(0);
+}
+
+/* Digital display */
+.digital-display {
+    display: none;
+    margin: 2rem 0;
+}
+
+.digital-display.active {
+    display: block;
+}
+
+.time-display {
+    font-size: 5rem;
+    font-weight: 300;
+    letter-spacing: 0.3rem;
+    font-variant-numeric: tabular-nums;
+    background: var(--primary-color);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--accent-color);
+}
+
+/* Analog display */
+.analog-display {
+    display: none;
+    margin: 2rem auto;
+    max-width: 400px;
+}
+
+.analog-display.active {
+    display: block;
+}
+
+#clock-svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.3));
+}
+
+.hour-marker {
+    fill: var(--marker-color);
+}
+
+.minute-marker {
+    fill: var(--marker-color);
+}
+
+.hour-number {
+    font-size: 24px;
+    font-weight: 500;
+    fill: var(--marker-color);
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+
+/* Info panel */
+.info-panel {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--primary-color);
+    border-radius: 15px;
+    border: 1px solid var(--accent-color);
+}
+
+.utc-time {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.scale-info {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.6;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+}
+
+/* Artwork description */
+.artwork-description {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--accent-color);
+    text-align: justify;
+}
+
+.artwork-description p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    opacity: 0.85;
+    margin-bottom: 1rem;
+}
+
+.authors {
+    font-style: italic;
+    text-align: right;
+    opacity: 0.7;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+/* Social links */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    opacity: 0.6;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a:hover .social-icon {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .time-display {
+        font-size: 3rem;
+        padding: 1.5rem;
+        letter-spacing: 0.2rem;
+    }
+    
+    .toggle-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .analog-display {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 400px) {
+    .time-display {
+        font-size: 2rem;
+        padding: 1rem;
+        letter-spacing: 0.1rem;
+    }
+}
+
+/* Smooth transitions */
+.digital-display,
+.analog-display {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
