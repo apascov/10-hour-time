@@ -10,17 +10,26 @@
     <div class="container">
         <h1>10-Hour Time System</h1>
         
-        <!-- Toggle button -->
-        <button id="toggle-view" class="toggle-btn">Switch to Analog</button>
-        
-        <!-- Digital display -->
-        <div id="digital-display" class="digital-display active">
-            <div class="time-display" id="time-display">00:00:00</div>
+        <!-- Mode buttons -->
+        <div class="mode-buttons">
+            <button id="clock-btn" class="mode-btn active">Clock</button>
+            <button id="stopwatch-btn" class="mode-btn">Stopwatch</button>
+            <button id="timer-btn" class="mode-btn">Timer</button>
         </div>
         
-        <!-- Analog display -->
-        <div id="analog-display" class="analog-display">
-            <svg id="clock-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <!-- View toggle (only for clock mode) -->
+        <button id="toggle-view" class="toggle-btn">Switch to Analog</button>
+        
+        <!-- Clock display -->
+        <div id="clock-mode" class="mode-display active">
+            <!-- Digital display -->
+            <div id="digital-display" class="digital-display active">
+                <div class="time-display" id="time-display">00:00:00</div>
+            </div>
+            
+            <!-- Analog display -->
+            <div id="analog-display" class="analog-display">
+                <svg id="clock-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
                 <!-- Clock face -->
                 <circle cx="200" cy="200" r="190" fill="var(--clock-face)" stroke="var(--clock-border)" stroke-width="4"/>
                 
@@ -52,6 +61,35 @@
                 <!-- Center dot -->
                 <circle cx="200" cy="200" r="8" fill="var(--center-dot)"/>
             </svg>
+            </div>
+        </div>
+        
+        <!-- Stopwatch display -->
+        <div id="stopwatch-mode" class="mode-display">
+            <div class="time-display-with-ms">
+                <span class="time-display" id="stopwatch-display">00:00:00</span>
+                <span class="milliseconds-display" id="stopwatch-ms-display">.000</span>
+            </div>
+            <div class="stopwatch-controls">
+                <button id="stopwatch-start" class="control-btn">Start</button>
+                <button id="stopwatch-reset" class="control-btn">Reset</button>
+            </div>
+        </div>
+        
+        <!-- Timer display -->
+        <div id="timer-mode" class="mode-display">
+            <div class="timer-input">
+                <input type="number" id="timer-hours" min="0" max="9" placeholder="H" class="timer-field" />
+                <span class="timer-separator">:</span>
+                <input type="number" id="timer-minutes" min="0" max="99" placeholder="MM" class="timer-field" />
+                <span class="timer-separator">:</span>
+                <input type="number" id="timer-seconds" min="0" max="99" placeholder="SS" class="timer-field" />
+            </div>
+            <div class="time-display" id="timer-display">00:00:00</div>
+            <div class="timer-controls">
+                <button id="timer-start" class="control-btn">Start</button>
+                <button id="timer-reset" class="control-btn">Reset</button>
+            </div>
         </div>
         
         <!-- Real time comparison (optional) -->

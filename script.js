@@ -10,6 +10,18 @@ const UPDATE_INTERVAL = 864; // milliseconds (0.864 seconds)
 // State
 let isAnalogMode = false;
 let animationFrameId = null;
+let currentMode = 'clock'; // 'clock', 'stopwatch', 'timer'
+
+// Stopwatch state
+let stopwatchRunning = false;
+let stopwatchStartTime = 0;
+let stopwatchElapsed = 0;
+let stopwatchInterval = null;
+
+// Timer state
+let timerRunning = false;
+let timerEndTime = 0;
+let timerInterval = null;
 
 /**
  * Calculate custom time from current UNIX timestamp
@@ -266,6 +278,19 @@ function init() {
     const toggleBtn = document.getElementById('toggle-view');
     toggleBtn.addEventListener('click', toggleView);
     
+    // Set up mode buttons
+    document.getElementById('clock-btn').addEventListener('click', () => switchMode('clock'));
+    document.getElementById('stopwatch-btn').addEventListener('click', () => switchMode('stopwatch'));
+    document.getElementById('timer-btn').addEventListener('click', () => switchMode('timer'));
+    
+    // Set up stopwatch controls
+    document.getElementById('stopwatch-start').addEventListener('click', toggleStopwatch);
+    document.getElementById('stopwatch-reset').addEventListener('click', resetStopwatch);
+    
+    // Set up timer controls
+    document.getElementById('timer-start').addEventListener('click', toggleTimer);
+    document.getElementById('timer-reset').addEventListener('click', resetTimer);
+    
     // Optional: Use requestAnimationFrame for smoother analog animation
     if (isAnalogMode) {
         function animate() {
@@ -274,6 +299,136 @@ function init() {
         }
         animate();
     }
+}
+
+/**
+ * Switch between clock, stopwatch, and timer modes
+ */
+function switchMode(mode) {
+    currentMode = mode;
+    
+    // Update mode buttons
+    document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`${mode}-btn`).classList.add('active');
+    
+    // Update displays
+    document.querySelectorAll('.mode-display').forEach(display => display.classList.remove('active'));
+    document.getElementById(`${mode}-mode`).classList.add('active');
+    
+    // Show/hide toggle button (only for clock mode)
+    const toggleBtn = document.getElementById('toggle-view');
+    if (mode === 'clock') {
+        toggleBtn.classList.remove('hidden');
+    } else {
+        toggleBtn.classList.add('hidden');
+    }
+}
+
+/**
+ * Format custom time from milliseconds
+ */
+function formatCustomTime(ms, includeMs = false) {
+    const customSeconds = (ms / 1000) * SCALE;
+    const h = Math.floor(customSeconds / 10000);
+    const m = Math.floor((customSeconds % 10000) / 100);
+    const s = Math.floor(customSeconds % 100);
+    
+    // Custom milliseconds: 1000 per custom second
+    const customMs = Math.floor((customSeconds % 1) * 1000);
+    
+    return {
+        h: h,
+        m: m,
+        s: s,
+        ms: customMs,
+        formatted: `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`,
+        formattedMs: `.${customMs.toString().padStart(3, '0')}`
+    };
+}
+
+/**
+ * Stopwatch functions
+ */
+function toggleStopwatch() {
+    const btn = document.getElementById('stopwatch-start');
+    
+    if (!stopwatchRunning) {
+        stopwatchRunning = true;
+        stopwatchStartTime = Date.now() - stopwatchElapsed;
+        btn.textContent = 'Pause';
+        
+        stopwatchInterval = setInterval(() => {
+            stopwatchElapsed = Date.now() - stopwatchStartTime;
+            const time = formatCustomTime(stopwatchElapsed, true);
+            document.getElementById('stopwatch-display').textContent = time.formatted;
+            document.getElementById('stopwatch-ms-display').textContent = time.formattedMs;
+        }, 10); // Update more frequently for smooth millisecond display
+    } else {
+        stopwatchRunning = false;
+        btn.textContent = 'Resume';
+        clearInterval(stopwatchInterval);
+    }
+}
+
+function resetStopwatch() {
+    stopwatchRunning = false;
+    stopwatchElapsed = 0;
+    clearInterval(stopwatchInterval);
+    document.getElementById('stopwatch-start').textContent = 'Start';
+    document.getElementById('stopwatch-display').textContent = '00:00:00';
+    document.getElementById('stopwatch-ms-display').textContent = '.000';
+}
+
+/**
+ * Timer functions
+ */
+function toggleTimer() {
+    const btn = document.getElementById('timer-start');
+    
+    if (!timerRunning) {
+        // Get input values
+        const hours = parseInt(document.getElementById('timer-hours').value) || 0;
+        const minutes = parseInt(document.getElementById('timer-minutes').value) || 0;
+        const seconds = parseInt(document.getElementById('timer-seconds').value) || 0;
+        
+        // Convert to real milliseconds
+        const totalCustomSeconds = hours * 10000 + minutes * 100 + seconds;
+        const totalRealMs = (totalCustomSeconds / SCALE) * 1000;
+        
+        if (totalRealMs > 0) {
+            timerRunning = true;
+            timerEndTime = Date.now() + totalRealMs;
+            btn.textContent = 'Pause';
+            
+            timerInterval = setInterval(() => {
+                const remaining = timerEndTime - Date.now();
+                
+                if (remaining <= 0) {
+                    // Timer finished
+                    document.getElementById('timer-display').textContent = '00:00:00';
+                    resetTimer();
+                    alert('Timer finished!');
+                } else {
+                    const time = formatCustomTime(remaining);
+                    document.getElementById('timer-display').textContent = time.formatted;
+                }
+            }, 50);
+        }
+    } else {
+        timerRunning = false;
+        btn.textContent = 'Resume';
+        clearInterval(timerInterval);
+    }
+}
+
+function resetTimer() {
+    timerRunning = false;
+    clearInterval(timerInterval);
+    document.getElementById('timer-start').textContent = 'Start';
+    document.getElementById('timer-display').textContent = '00:00:00';
+    document.getElementById('timer-hours').value = '';
+    document.getElementById('timer-minutes').value = '';
+    document.getElementById('timer-seconds').value = '';
 }
 
 // Start the clock when page loads

@@ -50,10 +50,41 @@ body {
 
 h1 {
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     color: var(--highlight-color);
     font-weight: 300;
     letter-spacing: 2px;
+}
+
+/* Mode buttons */
+.mode-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.mode-btn {
+    background: var(--accent-color);
+    color: var(--text-color);
+    border: 2px solid var(--accent-color);
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.mode-btn:hover {
+    border-color: var(--highlight-color);
+    transform: translateY(-2px);
+}
+
+.mode-btn.active {
+    background: var(--highlight-color);
+    border-color: var(--highlight-color);
+    box-shadow: 0 4px 12px rgba(233, 69, 96, 0.3);
 }
 
 /* Toggle button */
@@ -80,6 +111,19 @@ h1 {
     transform: translateY(0);
 }
 
+.toggle-btn.hidden {
+    display: none;
+}
+
+/* Mode displays */
+.mode-display {
+    display: none;
+}
+
+.mode-display.active {
+    display: block;
+}
+
 /* Digital display */
 .digital-display {
     display: none;
@@ -100,6 +144,118 @@ h1 {
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     border: 2px solid var(--accent-color);
+    margin-bottom: 1.5rem;
+}
+
+.time-display-with-ms {
+    background: var(--primary-color);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--accent-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
+.time-display-with-ms .time-display {
+    background: none;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+}
+
+.milliseconds-display {
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Stopwatch controls */
+.stopwatch-controls, .timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.control-btn {
+    background: var(--accent-color);
+    color: var(--text-color);
+    border: 2px solid var(--highlight-color);
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.control-btn:hover {
+    background: var(--highlight-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(233, 69, 96, 0.3);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
+/* Timer input */
+.timer-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.timer-field {
+    background: var(--primary-color);
+    color: var(--text-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 10px;
+    padding: 1rem;
+    font-size: 2rem;
+    width: 80px;
+    text-align: center;
+    font-weight: 300;
+    font-variant-numeric: tabular-nums;
+}
+
+.timer-field-small {
+    width: 100px;
+    font-size: 1.5rem;
+}
+
+.timer-field:focus {
+    outline: none;
+    border-color: var(--highlight-color);
+}
+
+.timer-field::placeholder {
+    color: var(--text-color);
+    opacity: 0.3;
+}
+
+.timer-separator {
+    font-size: 2rem;
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
+/* Remove number input arrows */
+.timer-field::-webkit-inner-spin-button,
+.timer-field::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.timer-field {
+    -moz-appearance: textfield;
 }
 
 /* Analog display */
